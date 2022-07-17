@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,5 +6,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("GameManager.Start");
+
+        GameObject gameObject = new GameObject("Pipe", typeof(SpriteRenderer));
+        gameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.GetInstance().pipeHeadSprite;
     }
 }
