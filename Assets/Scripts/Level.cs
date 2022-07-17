@@ -11,10 +11,13 @@ public class Level : MonoBehaviour
 
     private void Start()
     {
-        CreatePipe(50f, 0f, true);
-        CreatePipe(40f, 20f, false);
-        CreatePipe(30f, 40f, true);
-        CreatePipe(20f, 60f, false);
+        CreateGapPipes(50f, 20f, 20f);
+    }
+
+    private void CreateGapPipes(float gapY, float gapSize, float xPosition)
+    {
+        CreatePipe(gapY - gapSize * 0.5f, xPosition, true); 
+        CreatePipe(CameraOrthoSize * 2f  - gapY - gapSize * 0.5f, xPosition, false); 
     }
 
     public void CreatePipe(float height, float xPosition, bool createBottom)
