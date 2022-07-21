@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class Level : MonoBehaviour
@@ -9,19 +6,59 @@ public class Level : MonoBehaviour
     private const float PipeBodyWidth = 7.8f;
     private const float PipeHeadHeight = 3.75f;
     private const float CameraOrthoSize = 50f;
-    private const float PipeMoveSpeed = 10f;
+    private const float PipeMoveSpeed = 30f;
     private const float PipeDestroyXPosition = -100f;
+    private const float PipeSpawnXPosition = 100f;
 
     private List<Pipe> pipesList;
+    private int pipesSpawned;
+    private float pipeSpawnTimer;
+    private float pipeSpawnTimerMax;
+    private float gapSize;
+    
+    private enum Difficulty
+    {
+        Easy,
+        Medium,
+        Hard,
+        Impossible
+    }
+
 
     private void Awake()
     {
         pipesList = new List<Pipe>();
+        pipeSpawnTimerMax = 1f;
     }
 
     private void Update()
     {
         HandlePipeMovement();
+        HandlePipeSpawning();
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void HandlePipeSpawning()
+    {
+        pipeSpawnTimer -= Time.deltaTime;
+        if (pipeSpawnTimer < 0)
+        {
+            // Time to spawn another pipe
+            pipeSpawnTimer += pipeSpawnTimerMax;
+
+            var height = CalcRandomHeight();
+            CreateGapPipes(height, gapSize, PipeSpawnXPosition);
+        }
+    }
+
+    private float CalcRandomHeight()
+    {
+        const float heightEdgeLimit = 10f;
+        var minHeight = gapSize * 05f + heightEdgeLimit;
+        const float totalHeight = CameraOrthoSize * 2f;
+        var maxHeight = totalHeight - gapSize * 0.5f - heightEdgeLimit;
+
+        return Random.Range(minHeight, maxHeight);
     }
 
     private void HandlePipeMovement()
@@ -62,7 +99,7 @@ public class Level : MonoBehaviour
 
     private Transform CreatePipeHead(float height, float xPosition, bool createBottom)
     {
-        Transform pipeHead = Instantiate(GameAssets.GetInstance().pfPipeHead);
+        var pipeHead = Instantiate(GameAssets.GetInstance().pfPipeHead);
 
         float pipeHeadYPosition;
 
@@ -76,7 +113,6 @@ public class Level : MonoBehaviour
         }
 
         pipeHead.position = new Vector3(xPosition, pipeHeadYPosition);
-        ;
 
         return pipeHead;
     }
@@ -99,7 +135,6 @@ public class Level : MonoBehaviour
         }
 
         pipeBody.position = new Vector3(xPosition, pipeBodyYPosition);
-        ;
 
         var pipeBodySpriteRenderer = pipeBody.GetComponent<SpriteRenderer>();
         pipeBodySpriteRenderer.size = new Vector2(PipeBodyWidth, height);

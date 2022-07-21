@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class GameAssets : MonoBehaviour
 {
-    private static GameAssets instance;
+    private static GameAssets _instance;
 
     public static GameAssets GetInstance()
     {
-        return instance;
+        return _instance;
     }
 
     private void Awake()
     {
-        instance = this;
+        _instance = this;
     }
 
     public Sprite pipeHeadSprite;
