@@ -29,6 +29,7 @@ public class Level : MonoBehaviour
     {
         pipesList = new List<Pipe>();
         pipeSpawnTimerMax = 1f;
+        SetDifficulty(Difficulty.Easy);
     }
 
     private void Update()
@@ -48,6 +49,8 @@ public class Level : MonoBehaviour
 
             var height = CalcRandomHeight();
             CreateGapPipes(height, gapSize, PipeSpawnXPosition);
+            pipesSpawned++;
+            SetDifficulty(GetDifficulty());
         }
     }
 
@@ -81,6 +84,47 @@ public class Level : MonoBehaviour
         CreateGapPipes(50f, 20f, 20f);
     }
 
+    private void SetDifficulty(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.Easy:
+                gapSize = 50f;
+                pipeSpawnTimerMax = 1.2f;
+                break;
+            case Difficulty.Medium:
+                gapSize = 40f;
+                pipeSpawnTimerMax = 1.1f;
+                break;
+            case Difficulty.Hard:
+                gapSize = 35f;
+                pipeSpawnTimerMax = 1.0f;
+                break;
+            case Difficulty.Impossible:
+                gapSize = 25f;
+                pipeSpawnTimerMax = 0.9f;
+                break;
+            default:
+                gapSize = gapSize;
+                break;
+        }
+    }
+    
+    private Difficulty GetDifficulty()
+    {
+        switch (pipesSpawned)
+        {
+            case >= 30:
+                return Difficulty.Impossible;
+            case >= 20:
+                return Difficulty.Hard;
+            case >= 10:
+                return Difficulty.Medium;
+            default:
+                return Difficulty.Easy;
+        }
+    }
+    
     private void CreateGapPipes(float gapY, float gapSize, float xPosition)
     {
         CreatePipe(gapY - gapSize * 0.5f, xPosition, true);
