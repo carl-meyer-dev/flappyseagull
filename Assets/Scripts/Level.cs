@@ -9,13 +9,22 @@ public class Level : MonoBehaviour
     private const float PipeMoveSpeed = 30f;
     private const float PipeDestroyXPosition = -100f;
     private const float PipeSpawnXPosition = 100f;
+    private const float BirdXPosition = 0f;
+
+    private static Level _instance;
+
+    public static Level GetInstance()
+    {
+        return _instance;
+    }
 
     private List<Pipe> pipesList;
+    private int pipesPassedCount;
     private int pipesSpawned;
     private float pipeSpawnTimer;
     private float pipeSpawnTimerMax;
     private float gapSize;
-    
+
     private enum Difficulty
     {
         Easy,
@@ -27,6 +36,7 @@ public class Level : MonoBehaviour
 
     private void Awake()
     {
+        _instance = this;
         pipesList = new List<Pipe>();
         pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
@@ -69,7 +79,17 @@ public class Level : MonoBehaviour
         for (var index = 0; index < pipesList.Count; index++)
         {
             Pipe pipe = pipesList[index];
+            var isToTheRightOfBird = pipe.GetXPosition() > BirdXPosition;
             pipe.Move();
+            if (isToTheRightOfBird && pipe.GetXPosition() <= BirdXPosition)
+            {
+                // Pipe passed bird
+                if (pipe.IsBottom())
+                {
+                    pipesPassedCount++;
+                }
+            }
+
             if (pipe.GetXPosition() < PipeDestroyXPosition)
             {
                 pipesList.Remove(pipe);
@@ -104,12 +124,9 @@ public class Level : MonoBehaviour
                 gapSize = 25f;
                 pipeSpawnTimerMax = 0.9f;
                 break;
-            default:
-                gapSize = gapSize;
-                break;
         }
     }
-    
+
     private Difficulty GetDifficulty()
     {
         switch (pipesSpawned)
@@ -124,7 +141,8 @@ public class Level : MonoBehaviour
                 return Difficulty.Easy;
         }
     }
-    
+
+    // ReSharper disable once ParameterHidesMember
     private void CreateGapPipes(float gapY, float gapSize, float xPosition)
     {
         CreatePipe(gapY - gapSize * 0.5f, xPosition, true);
@@ -136,7 +154,7 @@ public class Level : MonoBehaviour
         Transform pipeHead = CreatePipeHead(height, xPosition, createBottom);
         Transform pipeBody = CreatePipeBody(height, xPosition, createBottom);
 
-        Pipe pipe = new Pipe(pipeHead, pipeBody);
+        Pipe pipe = new Pipe(pipeHead, pipeBody, createBottom);
 
         pipesList.Add(pipe);
     }
@@ -190,6 +208,16 @@ public class Level : MonoBehaviour
         return pipeBody;
     }
 
+    public int GetPipeSpawn()
+    {
+        return pipesSpawned;
+    }
+
+    public int GetPipesPassedCount()
+    {
+        return pipesPassedCount;
+    }
+
     /**
      * Represents a single Pipe
      */
@@ -197,11 +225,13 @@ public class Level : MonoBehaviour
     {
         private readonly Transform pipeHeadTransform;
         private readonly Transform pipeBodyTransform;
+        private readonly bool isBottom;
 
-        public Pipe(Transform pipeHeadTransform, Transform pipeBodyTransform)
+        public Pipe(Transform pipeHeadTransform, Transform pipeBodyTransform, bool isBottom)
         {
             this.pipeHeadTransform = pipeHeadTransform;
             this.pipeBodyTransform = pipeBodyTransform;
+            this.isBottom = isBottom;
         }
 
         public void Move()
@@ -213,6 +243,11 @@ public class Level : MonoBehaviour
         public float GetXPosition()
         {
             return pipeHeadTransform.position.x;
+        }
+
+        public bool IsBottom()
+        {
+            return isBottom;
         }
 
         public void DestroySelf()
