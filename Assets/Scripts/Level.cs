@@ -57,7 +57,7 @@ public class Level : MonoBehaviour
     private float CalcRandomHeight()
     {
         const float heightEdgeLimit = 10f;
-        var minHeight = gapSize * 05f + heightEdgeLimit;
+        var minHeight = gapSize * 0.5f + heightEdgeLimit;
         const float totalHeight = CameraOrthoSize * 2f;
         var maxHeight = totalHeight - gapSize * 0.5f - heightEdgeLimit;
 
