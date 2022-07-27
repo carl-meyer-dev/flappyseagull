@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using CodeMonkey;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Level : MonoBehaviour
 {
@@ -24,6 +27,7 @@ public class Level : MonoBehaviour
     private float pipeSpawnTimer;
     private float pipeSpawnTimerMax;
     private float gapSize;
+    private State state;
 
     private enum Difficulty
     {
@@ -33,6 +37,11 @@ public class Level : MonoBehaviour
         Impossible
     }
 
+    private enum State
+    {
+        Playing,
+        BirdDead
+    }
 
     private void Awake()
     {
@@ -40,12 +49,31 @@ public class Level : MonoBehaviour
         pipesList = new List<Pipe>();
         pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
+        state = State.Playing;
+    }
+
+    private void Start()
+    {
+        Bird.GetInstance().OnDied += Bird_OnDied;
+    }
+
+    private void Bird_OnDied(object sender, EventArgs e)
+    {
+        state = State.BirdDead;
+
+        FunctionTimer.Create(() =>
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
+        }, 1f);
     }
 
     private void Update()
     {
-        HandlePipeMovement();
-        HandlePipeSpawning();
+        if (state == State.Playing)
+        {
+            HandlePipeMovement();
+            HandlePipeSpawning();
+        }
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -97,11 +125,6 @@ public class Level : MonoBehaviour
                 index--;
             }
         }
-    }
-
-    private void Start()
-    {
-        CreateGapPipes(50f, 20f, 20f);
     }
 
     private void SetDifficulty(Difficulty difficulty)
