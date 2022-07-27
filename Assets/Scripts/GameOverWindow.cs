@@ -11,23 +11,25 @@ public class GameOverWindow : MonoBehaviour
 
     private void Awake()
     {
-        scoreText = transform.Find("scoreTex").GetComponent<Text>();
+        scoreText = transform.Find("scoreText").GetComponent<Text>();
 
         transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () =>
         {
-            FunctionTimer.Create(() => { SceneManager.LoadScene("GameScene"); }, 1f);
+            SceneManager.LoadScene("GameScene");
         };
-
-        Hide();
     }
 
     private void Start()
     {
-        Bird.GetInstance().OnDied += Bird_Died;
+        Bird.GetInstance().OnDied += Bird_OnDied;
+
+        Hide();
     }
 
-    private void Bird_Died(object sender, EventArgs e)
+    private void Bird_OnDied(object sender, EventArgs e)
     {
+        Debug.Log("Game Over");
+
         scoreText.text = Level.GetInstance().GetPipesPassedCount().ToString();
 
         Show();
