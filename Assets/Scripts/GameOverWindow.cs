@@ -1,8 +1,6 @@
 using System;
-using CodeMonkey;
 using CodeMonkey.Utils;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverWindow : MonoBehaviour
@@ -15,7 +13,7 @@ public class GameOverWindow : MonoBehaviour
 
         transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () =>
         {
-            SceneManager.LoadScene("GameScene");
+            Loader.Load(Loader.Scene.GameScene);
         };
     }
 
