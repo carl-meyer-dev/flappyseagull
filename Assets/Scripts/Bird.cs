@@ -3,28 +3,12 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
-    private Rigidbody2D birdRigidbody2D;
-
-    private static Bird _instance;
-
-    public static Bird GetInstance()
-    {
-        return _instance;
-    }
-
     private const float JumpAmount = 100f;
 
-    public event EventHandler OnDied;
-    public event EventHandler OnStartPlaying;
+    private static Bird _instance;
+    private Rigidbody2D birdRigidbody2D;
 
     private State state;
-
-    private enum State
-    {
-        WaitingToStart,
-        Playing,
-        Dead
-    }
 
     private void Awake()
     {
@@ -34,7 +18,7 @@ public class Bird : MonoBehaviour
         state = State.WaitingToStart;
     }
 
-    void Update()
+    private void Update()
     {
         switch (state)
         {
@@ -49,10 +33,7 @@ public class Bird : MonoBehaviour
 
                 break;
             case State.Playing:
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-                {
-                    Jump();
-                }
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) Jump();
 
                 break;
             case State.Dead:
@@ -60,14 +41,30 @@ public class Bird : MonoBehaviour
         }
     }
 
+    public static Bird GetInstance()
+    {
+        return _instance;
+    }
+
+    public event EventHandler OnDied;
+    public event EventHandler OnStartPlaying;
+
+    private enum State
+    {
+        WaitingToStart,
+        Playing,
+        Dead
+    } // ReSharper disable Unity.PerformanceAnalysis
     private void Jump()
     {
         birdRigidbody2D.velocity = Vector2.up * JumpAmount;
+        SoundManager.PlaySound(SoundManager.Sound.BirdJump);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         birdRigidbody2D.bodyType = RigidbodyType2D.Static; // stop bird from moving
+        SoundManager.PlaySound(SoundManager.Sound.Lose);
         OnDied?.Invoke(this, EventArgs.Empty);
     }
 }

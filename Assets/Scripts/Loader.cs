@@ -1,25 +1,25 @@
 using UnityEngine.SceneManagement;
 
-public static class Loader 
+public static class Loader
 {
-   public enum Scene
-   {
-      Game,
-      LoadingScene,
-      MainMenu
-   }
+    public enum Scene
+    {
+        Game,
+        LoadingScene,
+        MainMenu
+    }
 
-   private static Scene _targetScene;
-   public static void Load(Scene scene)
-   {
-      SceneManager.LoadScene(Scene.LoadingScene.ToString());
+    private static Scene _targetScene;
 
-      _targetScene = scene;
-   }
+    public static void Load(Scene scene)
+    {
+        SceneManager.LoadScene(Scene.LoadingScene.ToString());
 
-   public static void LoadTargetScene()
-   {
-      SceneManager.LoadScene(_targetScene.ToString());
+        _targetScene = scene;
+    }
 
-   }
+    public static void LoadTargetScene()
+    {
+        SceneManager.LoadScene(_targetScene.ToString());
+    }
 }

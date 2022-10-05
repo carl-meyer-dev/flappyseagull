@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CodeMonkey;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,34 +14,14 @@ public class Level : MonoBehaviour
     private const float BirdXPosition = 0f;
 
     private static Level _instance;
-
-    public static Level GetInstance()
-    {
-        return _instance;
-    }
+    private float gapSize;
 
     private List<Pipe> pipesList;
     private int pipesPassedCount;
-    private int pipesSpawned;
     private float pipeSpawnTimer;
     private float pipeSpawnTimerMax;
-    private float gapSize;
+    private int pipesSpawned;
     private State state;
-
-    private enum Difficulty
-    {
-        Easy,
-        Medium,
-        Hard,
-        Impossible
-    }
-
-    private enum State
-    {
-        WaitingToStart,
-        Playing,
-        BirdDead
-    }
 
     private void Awake()
     {
@@ -59,6 +38,20 @@ public class Level : MonoBehaviour
         Bird.GetInstance().OnStartPlaying += Bird_OnStartPlaying;
     }
 
+    private void Update()
+    {
+        if (state == State.Playing)
+        {
+            HandlePipeMovement();
+            HandlePipeSpawning();
+        }
+    }
+
+    public static Level GetInstance()
+    {
+        return _instance;
+    }
+
     private void Bird_OnStartPlaying(object sender, EventArgs e)
     {
         state = State.Playing;
@@ -69,16 +62,20 @@ public class Level : MonoBehaviour
         state = State.BirdDead;
     }
 
-    private void Update()
+    private enum Difficulty
     {
-        if (state == State.Playing)
-        {
-            HandlePipeMovement();
-            HandlePipeSpawning();
-        }
+        Easy,
+        Medium,
+        Hard,
+        Impossible
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
+    private enum State
+    {
+        WaitingToStart,
+        Playing,
+        BirdDead
+    } // ReSharper disable Unity.PerformanceAnalysis
     private void HandlePipeSpawning()
     {
         pipeSpawnTimer -= Time.deltaTime;
@@ -112,13 +109,12 @@ public class Level : MonoBehaviour
             var isToTheRightOfBird = pipe.GetXPosition() > BirdXPosition;
             pipe.Move();
             if (isToTheRightOfBird && pipe.GetXPosition() <= BirdXPosition)
-            {
                 // Pipe passed bird
                 if (pipe.IsBottom())
                 {
                     pipesPassedCount++;
+                    SoundManager.PlaySound(SoundManager.Sound.Score);
                 }
-            }
 
             if (pipe.GetXPosition() < PipeDestroyXPosition)
             {
@@ -179,25 +175,21 @@ public class Level : MonoBehaviour
         Transform pipeHead = CreatePipeHead(height, xPosition, createBottom);
         Transform pipeBody = CreatePipeBody(height, xPosition, createBottom);
 
-        Pipe pipe = new Pipe(pipeHead, pipeBody, createBottom);
+        var pipe = new Pipe(pipeHead, pipeBody, createBottom);
 
         pipesList.Add(pipe);
     }
 
     private Transform CreatePipeHead(float height, float xPosition, bool createBottom)
     {
-        var pipeHead = Instantiate(GameAssets.GetInstance().pfPipeHead);
+        Transform pipeHead = Instantiate(GameAssets.GetInstance().pfPipeHead);
 
         float pipeHeadYPosition;
 
         if (createBottom)
-        {
             pipeHeadYPosition = -CameraOrthoSize + height - PipeHeadHeight * 0.5f;
-        }
         else
-        {
             pipeHeadYPosition = +CameraOrthoSize - height + PipeHeadHeight * 0.5f;
-        }
 
         pipeHead.position = new Vector3(xPosition, pipeHeadYPosition);
 
@@ -248,9 +240,9 @@ public class Level : MonoBehaviour
      */
     private class Pipe
     {
-        private readonly Transform pipeHeadTransform;
-        private readonly Transform pipeBodyTransform;
         private readonly bool isBottom;
+        private readonly Transform pipeBodyTransform;
+        private readonly Transform pipeHeadTransform;
 
         public Pipe(Transform pipeHeadTransform, Transform pipeBodyTransform, bool isBottom)
         {
