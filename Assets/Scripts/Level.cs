@@ -13,13 +13,18 @@ public class Level : MonoBehaviour
     private const float PipeDestroyXPosition = -100f;
     private const float PipeSpawnXPosition = 100f;
     private const float GroundDestroyXPosition = -200f;
+    private const float CloudDestroyXPosition = -160f;
+    private const float CloudSpawnXPosition = +160f;
+    private const float CloudSpawnYPosition = +30f;
     private const float BirdXPosition = 0f;
 
     private static Level _instance;
     private float gapSize;
 
     private List<Transform> groundList;
+    private List<Transform> cloudList;
     private List<Pipe> pipesList;
+    private float cloudSpawnTimer;
     private int pipesPassedCount;
     private float pipeSpawnTimer;
     private float pipeSpawnTimerMax;
@@ -30,6 +35,7 @@ public class Level : MonoBehaviour
     {
         _instance = this;
         pipesList = new List<Pipe>();
+        SpawnInitialClouds();
         SpawnInitialGround();
         pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
@@ -49,9 +55,9 @@ public class Level : MonoBehaviour
             HandlePipeMovement();
             HandlePipeSpawning();
             HandleGround();
+            HandleClouds();
         }
     }
-
 
     public static Level GetInstance()
     {
@@ -131,6 +137,14 @@ public class Level : MonoBehaviour
         }
     }
 
+    private void SpawnInitialClouds()
+    {
+        cloudList = new List<Transform>();
+        
+        Transform cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(0, CloudSpawnYPosition, 0), quaternion.identity);
+        cloudList.Add(cloudTransform);
+    }
+
     private void SpawnInitialGround()
     {
         groundList = new List<Transform>();
@@ -144,6 +158,47 @@ public class Level : MonoBehaviour
         groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(groundWidth * 2f, groundY, 0), quaternion.identity);
         groundList.Add(groundTransform);
     }
+
+    private Transform GetCloudPrefabTransform()
+    {
+        var random = Random.Range(0, 3);
+        return random switch
+        {
+            1 => GameAssets.GetInstance().pfCloud_1,
+            2 => GameAssets.GetInstance().pfCloud_1,
+            _ => GameAssets.GetInstance().pfCloud_1
+        };
+    }
+    
+    private void HandleClouds()
+    {
+        // Handle Cloud Spawning
+        cloudSpawnTimer += Time.deltaTime;
+        if (cloudSpawnTimer < 0)
+        {
+            // Time to spawn another cloud
+            const float cloudSpawnTimerMax = 6f;
+            cloudSpawnTimer = cloudSpawnTimerMax;
+            Transform groundTransform = Instantiate(GameAssets.GetInstance().pfCloud_1, new Vector3(CloudSpawnXPosition, CloudSpawnYPosition, 0), quaternion.identity);
+            cloudList.Add(groundTransform);
+
+        }
+        
+        // Handle Cloud Moving
+        for (var i = 0; i < cloudList.Count; i++)
+        {
+            Transform cloudTransform = cloudList[i];
+            // move clouds with less speed for parralax effect
+            cloudTransform.position += new Vector3(-1, 0, 0) * (PipeMoveSpeed * Time.deltaTime * 0.7f);
+
+            if (!(cloudTransform.position.x < CloudDestroyXPosition)) continue;
+            // Cloud past destroy point, destroy self
+            Destroy(cloudTransform.gameObject);
+            cloudList.RemoveAt(i);
+            i--;
+        }
+    }
+
 
     private void HandleGround()
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
-    private const float JumpAmount = 100f;
+    private const float JumpAmount = 90f;
 
     private static Bird _instance;
     private Rigidbody2D birdRigidbody2D;
