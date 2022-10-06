@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class GameOverWindow : MonoBehaviour
 {
+    private Text highScoreText;
     private Text scoreText;
 
     private void Awake()
     {
         scoreText = transform.Find("scoreText").GetComponent<Text>();
+        highScoreText = transform.Find("highScoreText").GetComponent<Text>();
 
         transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () => { Loader.Load(Loader.Scene.Game); };
 
@@ -33,7 +35,11 @@ public class GameOverWindow : MonoBehaviour
     {
         Debug.Log("Game Over");
 
-        scoreText.text = Level.GetInstance().GetPipesPassedCount().ToString();
+        scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
+
+        highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()
+            ? "NEW HIGH SCORE!"
+            : $"HIGH SCORE: {Score.GetHighScore()}";
 
         Show();
     }
