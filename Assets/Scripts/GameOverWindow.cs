@@ -13,7 +13,10 @@ public class GameOverWindow : MonoBehaviour
         scoreText = transform.Find("scoreText").GetComponent<Text>();
         highScoreText = transform.Find("highScoreText").GetComponent<Text>();
 
-        transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () => { Loader.Load(Loader.Scene.Game); };
+        transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () =>
+        {
+            Loader.Load(Loader.Scene.Game);
+        };
 
         transform.Find("RetryButton").GetComponent<Button_UI>().AddButtonSounds();
 
@@ -22,16 +25,27 @@ public class GameOverWindow : MonoBehaviour
             Loader.Load(Loader.Scene.MainMenu);
         };
         transform.Find("MainMenuButton").GetComponent<Button_UI>().AddButtonSounds();
+
+        transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
     private void Start()
     {
-        Bird.GetInstance().OnDied += Bird_OnDied;
+        Bird.GetInstance().OnDied += GameWindow_OnDied;
 
         Hide();
     }
 
-    private void Bird_OnDied(object sender, EventArgs e)
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Retry
+            Loader.Load(Loader.Scene.Game);
+        }
+    }
+
+    private void GameWindow_OnDied(object sender, EventArgs e)
     {
         Debug.Log("Game Over");
 
