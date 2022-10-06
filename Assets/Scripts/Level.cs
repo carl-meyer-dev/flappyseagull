@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,11 +12,13 @@ public class Level : MonoBehaviour
     private const float PipeMoveSpeed = 30f;
     private const float PipeDestroyXPosition = -100f;
     private const float PipeSpawnXPosition = 100f;
+    private const float GroundDestroyXPosition = -200f;
     private const float BirdXPosition = 0f;
 
     private static Level _instance;
     private float gapSize;
 
+    private List<Transform> groundList;
     private List<Pipe> pipesList;
     private int pipesPassedCount;
     private float pipeSpawnTimer;
@@ -27,6 +30,7 @@ public class Level : MonoBehaviour
     {
         _instance = this;
         pipesList = new List<Pipe>();
+        SpawnInitialGround();
         pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
         state = State.WaitingToStart;
@@ -44,8 +48,10 @@ public class Level : MonoBehaviour
         {
             HandlePipeMovement();
             HandlePipeSpawning();
+            HandleGround();
         }
     }
+
 
     public static Level GetInstance()
     {
@@ -124,6 +130,49 @@ public class Level : MonoBehaviour
             }
         }
     }
+
+    private void SpawnInitialGround()
+    {
+        groundList = new List<Transform>();
+
+        const float groundY = -47.5f;
+        const float groundWidth = 192f;
+        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(0, groundY, 0), quaternion.identity);
+        groundList.Add(groundTransform);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(groundWidth, groundY, 0), quaternion.identity);
+        groundList.Add(groundTransform);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(groundWidth * 2f, groundY, 0), quaternion.identity);
+        groundList.Add(groundTransform);
+    }
+
+    private void HandleGround()
+    {
+        foreach (Transform groundTransform in groundList)
+        {
+            groundTransform.position += new Vector3(-1, 0, 0) * (PipeMoveSpeed * Time.deltaTime);
+
+            if (!(groundTransform.position.x < GroundDestroyXPosition)) continue;
+            // Ground passed the left side go relocate on the right side
+                
+            // Find the right most x position
+            var rightMostXPosition = -100f;
+            foreach (Transform t in groundList)
+            {
+                if (t.position.x > rightMostXPosition)
+                {
+                    rightMostXPosition = t.position.x;
+                }
+            }
+                
+            // Place ground on the right most position
+            const float groundWidthHalf = 192f;
+            Vector3 position = groundTransform.position;
+            position = new Vector3(rightMostXPosition + groundWidthHalf, position.y,
+                position.z);
+            groundTransform.position = position;
+        }
+    }
+
 
     private void SetDifficulty(Difficulty difficulty)
     {
