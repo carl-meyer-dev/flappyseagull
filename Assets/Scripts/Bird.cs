@@ -35,6 +35,8 @@ public class Bird : MonoBehaviour
             case State.Playing:
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) Jump();
 
+                transform.eulerAngles = new Vector3(0, 0, birdRigidbody2D.velocity.y * 0.15f);
+
                 break;
             case State.Dead:
                 break;

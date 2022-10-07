@@ -1092,6 +1092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 761273963}
   - component: {fileID: 761273964}
+  - component: {fileID: 761273965}
   m_Layer: 5
   m_Name: GameOverWindow
   m_TagString: Untagged
@@ -1124,7 +1125,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1049, y: -12}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 187.54, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &761273964
@@ -1139,6 +1140,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba6fe5627faf444a2b805a07f7ff99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!111 &761273965
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761273962}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 275d47a1d71365148977950fac888d99, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 275d47a1d71365148977950fac888d99, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &804346262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,7 +1435,7 @@ MonoBehaviour:
   m_Color: {r: 0.29411766, g: 0.29411766, b: 0.29411766, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1439,7 +1456,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057069115}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1 &1204261973
 GameObject:
   m_ObjectHideFlags: 0
@@ -2036,9 +2053,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2059,7 +2076,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860298237}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!4 &1902539290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8707313464205795786, guid: 0c9acb5670ccb444eb1bded07fb9fa40, type: 3}
