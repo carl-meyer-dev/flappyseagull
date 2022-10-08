@@ -706,8 +706,9 @@ GameObject:
   - component: {fileID: 496434303}
   - component: {fileID: 496434302}
   - component: {fileID: 496434301}
+  - component: {fileID: 496434304}
   m_Layer: 0
-  m_Name: Bird
+  m_Name: Seagull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -754,7 +755,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e8585b4c608ceae4f834fab8e477116b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c7b694d6181559a4d8c426ee268ad613, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -829,6 +830,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2799fb673783dad43bb90f93c06ec01f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &496434304
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496434298}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a059691dd8a851846b4dcb6079d8af40, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &538035757
 GameObject:
   m_ObjectHideFlags: 0

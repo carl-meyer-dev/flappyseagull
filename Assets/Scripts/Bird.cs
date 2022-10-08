@@ -7,15 +7,20 @@ public class Bird : MonoBehaviour
 
     private static Bird _instance;
     private Rigidbody2D birdRigidbody2D;
+    private Animator animator;
 
     private State state;
+    private static readonly int AnimatorState = Animator.StringToHash("State");
 
     private void Awake()
     {
         _instance = this;
         birdRigidbody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
         birdRigidbody2D.bodyType = RigidbodyType2D.Static;
         state = State.WaitingToStart;
+        animator.SetInteger(AnimatorState, state.GetHashCode());
     }
 
     private void Update()
@@ -43,6 +48,11 @@ public class Bird : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        animator.SetInteger(AnimatorState, state.GetHashCode());
+    }
+
     public static Bird GetInstance()
     {
         return _instance;
@@ -53,9 +63,9 @@ public class Bird : MonoBehaviour
 
     private enum State
     {
-        WaitingToStart,
-        Playing,
-        Dead
+        WaitingToStart = 0,
+        Playing = 1,
+        Dead = 2
     } // ReSharper disable Unity.PerformanceAnalysis
     private void Jump()
     {
@@ -65,6 +75,7 @@ public class Bird : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        state = State.Dead;
         birdRigidbody2D.bodyType = RigidbodyType2D.Static; // stop bird from moving
         SoundManager.PlaySound(SoundManager.Sound.Lose);
         OnDied?.Invoke(this, EventArgs.Empty);
