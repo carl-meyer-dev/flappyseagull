@@ -183,7 +183,7 @@ public class Level : MonoBehaviour
     private void HandleClouds()
     {
         // Handle Cloud Spawning
-        cloudSpawnTimer += Time.deltaTime;
+        cloudSpawnTimer -= Time.deltaTime;
         if (cloudSpawnTimer < 0)
         {
             // Time to spawn another cloud
