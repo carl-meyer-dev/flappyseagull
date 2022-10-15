@@ -8,7 +8,7 @@ public class MainMenuWindow : MonoBehaviour
         transform.Find("PlayButton").GetComponent<Button_UI>().ClickFunc = () =>
         {
             Debug.Log("Play Clicked!");
-            Loader.Load(Loader.Scene.Game);
+            Loader.Load(Loader.Scene.GameNewTest);
         };
         transform.Find("PlayButton").GetComponent<Button_UI>().AddButtonSounds();
         transform.Find("QuitButton").GetComponent<Button_UI>().ClickFunc = Application.Quit;

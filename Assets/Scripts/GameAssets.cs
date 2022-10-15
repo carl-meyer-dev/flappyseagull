@@ -7,7 +7,8 @@ public class GameAssets : MonoBehaviour
 
     public Sprite pipeHeadSprite;
     public Transform pfPipeBody;
-    public Transform pfPipeHead;
+    public Transform pfPipeHead_1;
+    public Transform pfPipeHead_2;
     public Transform pfGround;
     public Transform pfCloud_1;
     public Transform pfCloud_2;

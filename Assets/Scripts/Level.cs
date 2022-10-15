@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class Level : MonoBehaviour
 {
-    private const float PipeBodyWidth = 7.8f;
-    private const float PipeHeadHeight = 3.75f;
+    private const float PipeBodyWidth = 10f;
+    private const float PipeHeadHeight = 15f;
     private const float CameraOrthoSize = 50f;
     private const float PipeMoveSpeed = 30f;
     private const float PipeDestroyXPosition = -100f;
@@ -17,6 +17,7 @@ public class Level : MonoBehaviour
     private const float CloudSpawnXPosition = +160f;
     private const float CloudSpawnYPosition = +30f;
     private const float BirdXPosition = 0f;
+    private const float GroundWidth = 180f;
 
     private static Level _instance;
     private float gapSize;
@@ -150,12 +151,11 @@ public class Level : MonoBehaviour
         groundList = new List<Transform>();
 
         const float groundY = -47.5f;
-        const float groundWidth = 192f;
         Transform groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(0, groundY, 0), quaternion.identity);
         groundList.Add(groundTransform);
-        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(groundWidth, groundY, 0), quaternion.identity);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth, groundY, 0), quaternion.identity);
         groundList.Add(groundTransform);
-        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(groundWidth * 2f, groundY, 0), quaternion.identity);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth * 2f, groundY, 0), quaternion.identity);
         groundList.Add(groundTransform);
     }
 
@@ -165,8 +165,18 @@ public class Level : MonoBehaviour
         return random switch
         {
             1 => GameAssets.GetInstance().pfCloud_1,
-            2 => GameAssets.GetInstance().pfCloud_1,
-            _ => GameAssets.GetInstance().pfCloud_1
+            2 => GameAssets.GetInstance().pfCloud_2,
+            _ => GameAssets.GetInstance().pfCloud_3
+        };
+    }
+    
+    private Transform GetPipeHeadPrefabTransform()
+    {
+        var random = Random.Range(0, 2);
+        return random switch
+        {
+            1 => GameAssets.GetInstance().pfPipeHead_1,
+            _ => GameAssets.GetInstance().pfPipeHead_2,
         };
     }
     
@@ -220,9 +230,8 @@ public class Level : MonoBehaviour
             }
                 
             // Place ground on the right most position
-            const float groundWidthHalf = 192f;
             Vector3 position = groundTransform.position;
-            position = new Vector3(rightMostXPosition + groundWidthHalf, position.y,
+            position = new Vector3(rightMostXPosition + GroundWidth, position.y,
                 position.z);
             groundTransform.position = position;
         }
@@ -286,14 +295,20 @@ public class Level : MonoBehaviour
 
     private Transform CreatePipeHead(float height, float xPosition, bool createBottom)
     {
-        Transform pipeHead = Instantiate(GameAssets.GetInstance().pfPipeHead);
+
+        Transform pipeHead = Instantiate(GetPipeHeadPrefabTransform());
 
         float pipeHeadYPosition;
 
         if (createBottom)
+        {
             pipeHeadYPosition = -CameraOrthoSize + height - PipeHeadHeight * 0.5f;
+        }
         else
+        {
             pipeHeadYPosition = +CameraOrthoSize - height + PipeHeadHeight * 0.5f;
+            pipeHead.Rotate(0f, 0f, 180f);
+        }
 
         pipeHead.position = new Vector3(xPosition, pipeHeadYPosition);
 

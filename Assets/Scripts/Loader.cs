@@ -6,7 +6,8 @@ public static class Loader
     {
         Game,
         LoadingScene,
-        MainMenu
+        MainMenu,
+        GameNewTest
     }
 
     private static Scene _targetScene;
