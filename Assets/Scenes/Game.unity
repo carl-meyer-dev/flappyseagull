@@ -1018,6 +1018,7 @@ GameObject:
   - component: {fileID: 630461550}
   - component: {fileID: 630461549}
   - component: {fileID: 630461552}
+  - component: {fileID: 630461553}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1103,6 +1104,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af66e57961e1c814a8fbe19cb38ab0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &630461553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630461548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &761273962
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,5 +2467,13 @@ PrefabInstance:
       propertyPath: pfCloud_3
       value: 
       objectReference: {fileID: 8830496074639698108, guid: 35dd1f130bc11314cbc81dcaa2a2c9a5, type: 3}
+    - target: {fileID: 8707313464205795787, guid: 0c9acb5670ccb444eb1bded07fb9fa40, type: 3}
+      propertyPath: pfPipeHead_1
+      value: 
+      objectReference: {fileID: 1850639983738535041, guid: 242416816b61eb243b4f8c7ef33950f8, type: 3}
+    - target: {fileID: 8707313464205795787, guid: 0c9acb5670ccb444eb1bded07fb9fa40, type: 3}
+      propertyPath: pfPipeHead_2
+      value: 
+      objectReference: {fileID: 1850639983738535041, guid: 242416816b61eb243b4f8c7ef33950f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c9acb5670ccb444eb1bded07fb9fa40, type: 3}

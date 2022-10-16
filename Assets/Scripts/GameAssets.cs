@@ -13,6 +13,8 @@ public class GameAssets : MonoBehaviour
     public Transform pfCloud_1;
     public Transform pfCloud_2;
     public Transform pfCloud_3;
+    public Transform pfBuildingsFarBackground;
+    public Transform pfBuildingsFrontBackground;
 
     public SoundAudioClip[] SoundAudioClips;
 

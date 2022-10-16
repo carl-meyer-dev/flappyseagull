@@ -14,10 +14,11 @@ public class Level : MonoBehaviour
     private const float PipeSpawnXPosition = 100f;
     private const float GroundDestroyXPosition = -200f;
     private const float CloudDestroyXPosition = -160f;
-    private const float CloudSpawnXPosition = +160f;
+    private const float CloudSpawnXPosition = +80f;
     private const float CloudSpawnYPosition = +30f;
     private const float BirdXPosition = 0f;
     private const float GroundWidth = 180f;
+    private const float CloudWidth = 60f;
 
     private static Level _instance;
     private float gapSize;
@@ -36,7 +37,7 @@ public class Level : MonoBehaviour
     {
         _instance = this;
         pipesList = new List<Pipe>();
-        SpawnInitialClouds();
+        // SpawnInitialClouds();
         SpawnInitialGround();
         pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
@@ -56,7 +57,7 @@ public class Level : MonoBehaviour
             HandlePipeMovement();
             HandlePipeSpawning();
             HandleGround();
-            HandleClouds();
+            // HandleClouds();
         }
     }
 
@@ -141,9 +142,16 @@ public class Level : MonoBehaviour
     private void SpawnInitialClouds()
     {
         cloudList = new List<Transform>();
+    
+        const float cloudStartY = -70f;
         
-        Transform cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(0, CloudSpawnYPosition, 0), quaternion.identity);
+        Transform cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(cloudStartY, CloudSpawnYPosition, 0), quaternion.identity);
         cloudList.Add(cloudTransform);
+        cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(cloudStartY + CloudWidth, CloudSpawnYPosition, 0), quaternion.identity);
+        cloudList.Add(cloudTransform);
+        cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(cloudStartY + (CloudWidth * 2f), CloudSpawnYPosition, 0), quaternion.identity);
+        cloudList.Add(cloudTransform);
+        
     }
 
     private void SpawnInitialGround()
@@ -187,7 +195,7 @@ public class Level : MonoBehaviour
         if (cloudSpawnTimer < 0)
         {
             // Time to spawn another cloud
-            const float cloudSpawnTimerMax = 6f;
+            const float cloudSpawnTimerMax = 3f;
             cloudSpawnTimer = cloudSpawnTimerMax;
             Transform groundTransform = Instantiate(GameAssets.GetInstance().pfCloud_1, new Vector3(CloudSpawnXPosition, CloudSpawnYPosition, 0), quaternion.identity);
             cloudList.Add(groundTransform);
