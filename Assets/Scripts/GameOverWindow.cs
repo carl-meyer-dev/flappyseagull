@@ -13,17 +13,14 @@ public class GameOverWindow : MonoBehaviour
         scoreText = transform.Find("scoreText").GetComponent<Text>();
         highScoreText = transform.Find("highScoreText").GetComponent<Text>();
 
-        transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () =>
-        {
-            Loader.Load(Loader.Scene.Game);
-        };
+        SetupUI();
+    }
 
+    private void SetupUI()
+    {
         transform.Find("RetryButton").GetComponent<Button_UI>().AddButtonSounds();
 
-        transform.Find("MainMenuButton").GetComponent<Button_UI>().ClickFunc = () =>
-        {
-            Loader.Load(Loader.Scene.MainMenu);
-        };
+
         transform.Find("MainMenuButton").GetComponent<Button_UI>().AddButtonSounds();
 
         transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -33,7 +30,7 @@ public class GameOverWindow : MonoBehaviour
     {
         Loader.Load(Loader.Scene.Game);
     }
-    
+
     public void OnReturnToMainMenu()
     {
         Loader.Load(Loader.Scene.MainMenu);
@@ -57,8 +54,6 @@ public class GameOverWindow : MonoBehaviour
 
     private void GameWindow_OnDied(object sender, EventArgs e)
     {
-        Debug.Log("Game Over");
-
         scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
 
         highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()

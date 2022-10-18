@@ -1283,11 +1283,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1025899220}
-  - component: {fileID: 1025899221}
   - component: {fileID: 1025899225}
   - component: {fileID: 1025899224}
   - component: {fileID: 1025899223}
   - component: {fileID: 1025899222}
+  - component: {fileID: 1025899226}
   m_Layer: 5
   m_Name: RetryButton
   m_TagString: Untagged
@@ -1316,27 +1316,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1025899221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025899219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 602f74cbbbd80034b96f88091a8e7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverBehaviourType: 1
-  hoverBehaviour_Color_Enter: {r: 0, g: 0.39215687, b: 0.5882353, a: 1}
-  hoverBehaviour_Color_Exit: {r: 0, g: 0.3019608, b: 0.39215687, a: 1}
-  hoverBehaviour_Image: {fileID: 0}
-  hoverBehaviour_Sprite_Exit: {fileID: 0}
-  hoverBehaviour_Sprite_Enter: {fileID: 0}
-  hoverBehaviour_Move: 0
-  hoverBehaviour_Move_Amount: {x: 0, y: 0}
-  triggerMouseOutFuncOnClick: 0
 --- !u!114 &1025899222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,6 +1424,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1025899219}
   m_CullTransparentMesh: 1
+--- !u!114 &1025899226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025899219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602f74cbbbd80034b96f88091a8e7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverBehaviourType: 0
+  hoverBehaviour_Color_Enter: {r: 0, g: 0, b: 0, a: 0}
+  hoverBehaviour_Color_Exit: {r: 0, g: 0, b: 0, a: 0}
+  hoverBehaviour_Image: {fileID: 1025899224}
+  hoverBehaviour_Sprite_Exit: {fileID: 0}
+  hoverBehaviour_Sprite_Enter: {fileID: 0}
+  hoverBehaviour_Move: 0
+  hoverBehaviour_Move_Amount: {x: 0, y: 0}
+  triggerMouseOutFuncOnClick: 0
 --- !u!1 &1181890858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,11 +1916,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1499367479}
-  - component: {fileID: 1499367480}
   - component: {fileID: 1499367484}
   - component: {fileID: 1499367483}
   - component: {fileID: 1499367482}
   - component: {fileID: 1499367481}
+  - component: {fileID: 1499367485}
   m_Layer: 5
   m_Name: MainMenuButton
   m_TagString: Untagged
@@ -1949,27 +1949,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -175}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1499367480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499367478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 602f74cbbbd80034b96f88091a8e7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverBehaviourType: 1
-  hoverBehaviour_Color_Enter: {r: 0.78431374, g: 0.039215688, b: 0, a: 1}
-  hoverBehaviour_Color_Exit: {r: 0.47058824, g: 0.039215688, b: 0, a: 1}
-  hoverBehaviour_Image: {fileID: 0}
-  hoverBehaviour_Sprite_Exit: {fileID: 0}
-  hoverBehaviour_Sprite_Enter: {fileID: 0}
-  hoverBehaviour_Move: 0
-  hoverBehaviour_Move_Amount: {x: 0, y: 0}
-  triggerMouseOutFuncOnClick: 0
 --- !u!114 &1499367481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2078,6 +2057,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1499367478}
   m_CullTransparentMesh: 1
+--- !u!114 &1499367485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499367478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602f74cbbbd80034b96f88091a8e7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverBehaviourType: 0
+  hoverBehaviour_Color_Enter: {r: 0, g: 0, b: 0, a: 0}
+  hoverBehaviour_Color_Exit: {r: 0, g: 0, b: 0, a: 0}
+  hoverBehaviour_Image: {fileID: 1499367483}
+  hoverBehaviour_Sprite_Exit: {fileID: 0}
+  hoverBehaviour_Sprite_Enter: {fileID: 0}
+  hoverBehaviour_Move: 0
+  hoverBehaviour_Move_Amount: {x: 0, y: 0}
+  triggerMouseOutFuncOnClick: 0
 --- !u!1 &1510516082
 GameObject:
   m_ObjectHideFlags: 0
