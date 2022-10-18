@@ -4,20 +4,17 @@ using UnityEngine.UI;
 
 public class ScoreWindow : MonoBehaviour
 {
-    private Text highScoreText;
     private Text scoreText;
 
     private void Awake()
     {
         scoreText = transform.Find("scoreText").GetComponent<Text>();
-        highScoreText = transform.Find("highScoreText").GetComponent<Text>();
     }
 
     private void Start()
     {
         Bird.GetInstance().OnDied += ScoreWindow_OnBirdDied;
         Bird.GetInstance().OnStartPlaying += ScoreWindow_OnStartPlaying;
-        highScoreText.text = $"HIGH SCORE: {Score.GetHighScore()}";
         Hide();
     }
 

@@ -15,7 +15,7 @@ public class GameOverWindow : MonoBehaviour
 
         transform.Find("RetryButton").GetComponent<Button_UI>().ClickFunc = () =>
         {
-            Loader.Load(Loader.Scene.GameNewTest);
+            Loader.Load(Loader.Scene.Game);
         };
 
         transform.Find("RetryButton").GetComponent<Button_UI>().AddButtonSounds();
@@ -27,6 +27,16 @@ public class GameOverWindow : MonoBehaviour
         transform.Find("MainMenuButton").GetComponent<Button_UI>().AddButtonSounds();
 
         transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+    }
+
+    public void OnPlayAgain()
+    {
+        Loader.Load(Loader.Scene.Game);
+    }
+    
+    public void OnReturnToMainMenu()
+    {
+        Loader.Load(Loader.Scene.MainMenu);
     }
 
     private void Start()
@@ -41,7 +51,7 @@ public class GameOverWindow : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Retry
-            Loader.Load(Loader.Scene.GameNewTest);
+            Loader.Load(Loader.Scene.Game);
         }
     }
 

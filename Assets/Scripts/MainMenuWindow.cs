@@ -12,7 +12,7 @@ public class MainMenuWindow : MonoBehaviour
 
     public void OnPlay()
     {
-        Loader.Load(Loader.Scene.GameNewTest);
+        Loader.Load(Loader.Scene.Game);
     }
 
     public void OnQuit()
