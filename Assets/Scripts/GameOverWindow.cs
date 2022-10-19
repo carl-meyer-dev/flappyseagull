@@ -1,70 +1,73 @@
-﻿/* 
-    ------------------- Code Monkey -------------------
-
-    Thank you for downloading this package
-    I hope you find it useful in your projects
-    If you have any questions let me know
-    Cheers!
-
-               unitycodemonkey.com
-    --------------------------------------------------
- */
-
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using CodeMonkey.Utils;
 using UnityEngine;
 using UnityEngine.UI;
-using CodeMonkey.Utils;
 
-public class GameOverWindow : MonoBehaviour {
-
+public class GameOverWindow : MonoBehaviour
+{
+    private Text highScoreText;
     private Text scoreText;
-    private Text highscoreText;
 
-    private void Awake() {
+    private void Awake()
+    {
         scoreText = transform.Find("scoreText").GetComponent<Text>();
-        highscoreText = transform.Find("highscoreText").GetComponent<Text>();
-        
-        transform.Find("retryBtn").GetComponent<Button_UI>().ClickFunc = () => { Loader.Load(Loader.Scene.GameScene); };
-        transform.Find("retryBtn").GetComponent<Button_UI>().AddButtonSounds();
-        
-        transform.Find("mainMenuBtn").GetComponent<Button_UI>().ClickFunc = () => { Loader.Load(Loader.Scene.MainMenu); };
-        transform.Find("mainMenuBtn").GetComponent<Button_UI>().AddButtonSounds();
+        highScoreText = transform.Find("highScoreText").GetComponent<Text>();
+
+        SetupUI();
+    }
+
+    private void Start()
+    {
+        Bird.GetInstance().OnDied += GameWindow_OnDied;
+
+        Hide();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            // Retry
+            Loader.Load(Loader.Scene.Game);
+    }
+
+    private void SetupUI()
+    {
+        transform.Find("RetryButton").GetComponent<Button_UI>().AddButtonSounds();
+
+
+        transform.Find("MainMenuButton").GetComponent<Button_UI>().AddButtonSounds();
 
         transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
-    private void Start() {
-        Bird.GetInstance().OnDied += Bird_OnDied;
-        Hide();
+    public void OnPlayAgain()
+    {
+        Loader.Load(Loader.Scene.Game);
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            // Retry
-            Loader.Load(Loader.Scene.GameScene);
-        }
+    public void OnReturnToMainMenu()
+    {
+        Loader.Load(Loader.Scene.MainMenu);
     }
 
-    private void Bird_OnDied(object sender, System.EventArgs e) {
-        scoreText.text = Level.GetInstance().GetPipesPassedCount().ToString();
+    private void GameWindow_OnDied(object sender, EventArgs e)
+    {
+        scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
 
-        if (Level.GetInstance().GetPipesPassedCount() >= Score.GetHighscore()) {
-            // New Highscore!
-            highscoreText.text = "NEW HIGHSCORE";
-        } else {
-            highscoreText.text = "HIGHSCORE: " + Score.GetHighscore();
-        }
+        highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()
+            ? "NEW HIGH SCORE!"
+            : $"HIGH SCORE: {Score.GetHighScore()}";
 
         Show();
     }
 
-    private void Hide() {
+    private void Hide()
+    {
         gameObject.SetActive(false);
     }
 
-    private void Show() {
+    private void Show()
+    {
         gameObject.SetActive(true);
     }
-
 }

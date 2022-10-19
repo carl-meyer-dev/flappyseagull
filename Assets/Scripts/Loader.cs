@@ -1,38 +1,25 @@
-﻿/* 
-    ------------------- Code Monkey -------------------
-
-    Thank you for downloading this package
-    I hope you find it useful in your projects
-    If you have any questions let me know
-    Cheers!
-
-               unitycodemonkey.com
-    --------------------------------------------------
- */
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class Loader {
-
-    public enum Scene {
-        GameScene,
-        Loading,
+public static class Loader
+{
+    public enum Scene
+    {
+        LoadingScene,
         MainMenu,
+        Game
     }
 
-    private static Scene targetScene;
+    private static Scene _targetScene;
 
-    public static void Load(Scene scene) {
-        SceneManager.LoadScene(Scene.Loading.ToString());
+    public static void Load(Scene scene)
+    {
+        SceneManager.LoadScene(Scene.LoadingScene.ToString());
 
-        targetScene = scene;
+        _targetScene = scene;
     }
 
-    public static void LoadTargetScene() {
-        SceneManager.LoadScene(targetScene.ToString());
+    public static void LoadTargetScene()
+    {
+        SceneManager.LoadScene(_targetScene.ToString());
     }
-
 }
