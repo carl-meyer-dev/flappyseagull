@@ -16,6 +16,20 @@ public class GameOverWindow : MonoBehaviour
         SetupUI();
     }
 
+    private void Start()
+    {
+        Bird.GetInstance().OnDied += GameWindow_OnDied;
+
+        Hide();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            // Retry
+            Loader.Load(Loader.Scene.Game);
+    }
+
     private void SetupUI()
     {
         transform.Find("RetryButton").GetComponent<Button_UI>().AddButtonSounds();
@@ -34,22 +48,6 @@ public class GameOverWindow : MonoBehaviour
     public void OnReturnToMainMenu()
     {
         Loader.Load(Loader.Scene.MainMenu);
-    }
-
-    private void Start()
-    {
-        Bird.GetInstance().OnDied += GameWindow_OnDied;
-
-        Hide();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Retry
-            Loader.Load(Loader.Scene.Game);
-        }
     }
 
     private void GameWindow_OnDied(object sender, EventArgs e)

@@ -1,21 +1,20 @@
-using System;
 using UnityEngine;
 
 public class SeagullMenuMovement : MonoBehaviour
 {
     private const float WalkSpeed = 10f;
+    private static readonly int AnimatorState = Animator.StringToHash("State");
+    private Animator animator;
     private Vector3 direction = Vector3.right;
-    private SpriteRenderer sprite;
-    private float walkingAnimationTimer;
-    private float walkingAnimationTimerMax;
+    private bool hasPecked;
     private float idleAnimationTimer;
     private float idleAnimationTimerMax;
     private float peckingAnimationTimer;
     private float peckingAnimationTimerMax;
+    private SpriteRenderer sprite;
     private State state;
-    private Animator animator;
-    private static readonly int AnimatorState = Animator.StringToHash("State");
-    private bool hasPecked = false;
+    private float walkingAnimationTimer;
+    private float walkingAnimationTimerMax;
 
     private void Awake()
     {
@@ -27,31 +26,30 @@ public class SeagullMenuMovement : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         state = State.Walking;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (state == State.Walking)
-        {
-            HandleMovement();
-        }
+        if (state == State.Walking) HandleMovement();
 
-        if (state == State.Idle)
-        {
-            HandleIdle();
-        }
+        if (state == State.Idle) HandleIdle();
 
-        if (state == State.Pecking)
-        {
-            HandlePecking();
-        }
+        if (state == State.Pecking) HandlePecking();
 
         UpdateAnimationState();
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log("On Trigger Enter!");
+        direction = direction == Vector3.right ? Vector3.left : Vector3.right;
+        sprite.flipX = !sprite.flipX;
     }
 
     private void HandlePecking()
@@ -84,7 +82,6 @@ public class SeagullMenuMovement : MonoBehaviour
                 state = State.Pecking;
                 idleAnimationTimer = 0f;
             }
-            
         }
     }
 
@@ -107,14 +104,6 @@ public class SeagullMenuMovement : MonoBehaviour
         {
             transform.position += direction * (WalkSpeed * Time.deltaTime);
         }
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        Debug.Log("On Trigger Enter!");
-        direction = direction == Vector3.right ? Vector3.left : Vector3.right;
-        sprite.flipX = !sprite.flipX;
     }
 
     private enum State

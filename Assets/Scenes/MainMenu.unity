@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6673337256952706588, guid: da4901c9691f7a24eb181505fdf20f4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 102.9
+      value: 78.4
       objectReference: {fileID: 0}
     - target: {fileID: 6673337256952706588, guid: da4901c9691f7a24eb181505fdf20f4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -786,7 +786,7 @@ Transform:
   m_GameObject: {fileID: 804346262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7, y: 6.917364, z: 1}
+  m_LocalScale: {x: 10, y: 7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -902,7 +902,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1006768766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.87, y: 1.63, z: 0}
+  m_LocalPosition: {x: 50, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1326,7 +1326,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1308265587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.4, y: 1.1, z: 0}
+  m_LocalPosition: {x: -50, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1863,7 +1863,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 89.961395, y: 7.634586}
+  m_Size: {x: 120, y: 7.634586}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2042,7 +2042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4219916755734636994, guid: e316412fa095ef6489286a63ffb3de98, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.2
+      value: -69
       objectReference: {fileID: 0}
     - target: {fileID: 4219916755734636994, guid: e316412fa095ef6489286a63ffb3de98, type: 3}
       propertyPath: m_LocalPosition.y

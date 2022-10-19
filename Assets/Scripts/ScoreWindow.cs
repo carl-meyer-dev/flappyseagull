@@ -18,7 +18,6 @@ public class ScoreWindow : MonoBehaviour
         Hide();
     }
 
-    
 
     private void Update()
     {
@@ -29,7 +28,7 @@ public class ScoreWindow : MonoBehaviour
     {
         Hide();
     }
-    
+
     private void ScoreWindow_OnStartPlaying(object sender, EventArgs e)
     {
         Show();
@@ -39,7 +38,7 @@ public class ScoreWindow : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-    
+
     private void Show()
     {
         gameObject.SetActive(true);

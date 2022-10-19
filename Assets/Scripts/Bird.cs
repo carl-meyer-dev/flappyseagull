@@ -6,11 +6,11 @@ public class Bird : MonoBehaviour
     private const float JumpAmount = 90f;
 
     private static Bird _instance;
-    private Rigidbody2D birdRigidbody2D;
+    private static readonly int AnimatorState = Animator.StringToHash("State");
     private Animator animator;
+    private Rigidbody2D birdRigidbody2D;
 
     private State state;
-    private static readonly int AnimatorState = Animator.StringToHash("State");
 
     private void Awake()
     {

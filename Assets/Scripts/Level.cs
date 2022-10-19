@@ -10,23 +10,23 @@ public class Level : MonoBehaviour
     private const float PipeHeadHeight = 15f;
     private const float CameraOrthoSize = 50f;
     private const float PipeMoveSpeed = 30f;
-    private const float PipeDestroyXPosition = -100f;
-    private const float PipeSpawnXPosition = 100f;
-    private const float GroundDestroyXPosition = -200f;
+    private const float PipeDestroyXPosition = -200f;
+    private const float PipeSpawnXPosition = 150f;
+    private const float GroundDestroyXPosition = -250f;
     private const float CloudDestroyXPosition = -160f;
     private const float CloudSpawnXPosition = +80f;
     private const float CloudSpawnYPosition = +30f;
     private const float BirdXPosition = 0f;
-    private const float GroundWidth = 180f;
+    private const float GroundWidth = 269f;
     private const float CloudWidth = 60f;
 
     private static Level _instance;
+    private List<Transform> cloudList;
+    private float cloudSpawnTimer;
     private float gapSize;
 
     private List<Transform> groundList;
-    private List<Transform> cloudList;
     private List<Pipe> pipesList;
-    private float cloudSpawnTimer;
     private int pipesPassedCount;
     private float pipeSpawnTimer;
     private float pipeSpawnTimerMax;
@@ -142,28 +142,33 @@ public class Level : MonoBehaviour
     private void SpawnInitialClouds()
     {
         cloudList = new List<Transform>();
-    
+
         const float cloudStartY = -70f;
-        
-        Transform cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(cloudStartY, CloudSpawnYPosition, 0), quaternion.identity);
+
+        Transform cloudTransform = Instantiate(GetCloudPrefabTransform(),
+            new Vector3(cloudStartY, CloudSpawnYPosition, 0), quaternion.identity);
         cloudList.Add(cloudTransform);
-        cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(cloudStartY + CloudWidth, CloudSpawnYPosition, 0), quaternion.identity);
+        cloudTransform = Instantiate(GetCloudPrefabTransform(),
+            new Vector3(cloudStartY + CloudWidth, CloudSpawnYPosition, 0), quaternion.identity);
         cloudList.Add(cloudTransform);
-        cloudTransform = Instantiate(GetCloudPrefabTransform(), new Vector3(cloudStartY + (CloudWidth * 2f), CloudSpawnYPosition, 0), quaternion.identity);
+        cloudTransform = Instantiate(GetCloudPrefabTransform(),
+            new Vector3(cloudStartY + CloudWidth * 2f, CloudSpawnYPosition, 0), quaternion.identity);
         cloudList.Add(cloudTransform);
-        
     }
 
     private void SpawnInitialGround()
     {
         groundList = new List<Transform>();
 
-        const float groundY = -47.5f;
-        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(0, groundY, 0), quaternion.identity);
+        const float groundY = -50f;
+        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(0, groundY, 0),
+            quaternion.identity);
         groundList.Add(groundTransform);
-        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth, groundY, 0), quaternion.identity);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth, groundY, 0),
+            quaternion.identity);
         groundList.Add(groundTransform);
-        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth * 2f, groundY, 0), quaternion.identity);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth * 2f, groundY, 0),
+            quaternion.identity);
         groundList.Add(groundTransform);
     }
 
@@ -177,17 +182,17 @@ public class Level : MonoBehaviour
             _ => GameAssets.GetInstance().pfCloud_3
         };
     }
-    
+
     private Transform GetPipeHeadPrefabTransform()
     {
         var random = Random.Range(0, 2);
         return random switch
         {
             1 => GameAssets.GetInstance().pfPipeHead_1,
-            _ => GameAssets.GetInstance().pfPipeHead_2,
+            _ => GameAssets.GetInstance().pfPipeHead_2
         };
     }
-    
+
     private void HandleClouds()
     {
         // Handle Cloud Spawning
@@ -197,11 +202,11 @@ public class Level : MonoBehaviour
             // Time to spawn another cloud
             const float cloudSpawnTimerMax = 3f;
             cloudSpawnTimer = cloudSpawnTimerMax;
-            Transform groundTransform = Instantiate(GameAssets.GetInstance().pfCloud_1, new Vector3(CloudSpawnXPosition, CloudSpawnYPosition, 0), quaternion.identity);
+            Transform groundTransform = Instantiate(GameAssets.GetInstance().pfCloud_1,
+                new Vector3(CloudSpawnXPosition, CloudSpawnYPosition, 0), quaternion.identity);
             cloudList.Add(groundTransform);
-
         }
-        
+
         // Handle Cloud Moving
         for (var i = 0; i < cloudList.Count; i++)
         {
@@ -226,17 +231,13 @@ public class Level : MonoBehaviour
 
             if (!(groundTransform.position.x < GroundDestroyXPosition)) continue;
             // Ground passed the left side go relocate on the right side
-                
+
             // Find the right most x position
             var rightMostXPosition = -100f;
             foreach (Transform t in groundList)
-            {
                 if (t.position.x > rightMostXPosition)
-                {
                     rightMostXPosition = t.position.x;
-                }
-            }
-                
+
             // Place ground on the right most position
             Vector3 position = groundTransform.position;
             position = new Vector3(rightMostXPosition + GroundWidth, position.y,
@@ -303,7 +304,6 @@ public class Level : MonoBehaviour
 
     private Transform CreatePipeHead(float height, float xPosition, bool createBottom)
     {
-
         Transform pipeHead = Instantiate(GetPipeHeadPrefabTransform());
 
         float pipeHeadYPosition;

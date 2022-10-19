@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
-
-    private State state;
-    
-    private List<Transform> buildingsFarList;
     private const float BackgroundSpeed = 10f;
     private const float buildingsFarDestroyXPosition = -270f;
     private const float buildingsFarWidth = 400f;
-    
-    private List<Transform> buildingsFrontList;
     private const float buildingsFrontDestroyXPosition = -300f;
     private const float buildingsFrontWidth = 400f;
-    
+
+    private List<Transform> buildingsFarList;
+
+    private List<Transform> buildingsFrontList;
+
     private List<Transform> layer2Buildings;
+
+    private State state;
 
 
     private void Awake()
@@ -26,34 +26,48 @@ public class Background : MonoBehaviour
         SpawnInitialBuildingsFront();
     }
 
+    private void Start()
+    {
+        Bird.GetInstance().OnDied += Bird_OnDied;
+        Bird.GetInstance().OnStartPlaying += Bird_OnStartPlaying;
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        if (state == State.Playing)
+        {
+            HandleBuildingsFarMovement();
+            HandleBuildingsFrontMovement();
+        }
+    }
+
     private void SpawnInitialBuildingsFar()
     {
         buildingsFarList = new List<Transform>();
 
         const float buildingsFarY = -14f;
 
-        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFarBackground, new Vector3(0, buildingsFarY, 0), quaternion.identity);
+        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFarBackground,
+            new Vector3(0, buildingsFarY, 0), quaternion.identity);
         buildingsFarList.Add(groundTransform);
-        groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFarBackground, new Vector3(buildingsFarWidth, buildingsFarY, 0), quaternion.identity);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFarBackground,
+            new Vector3(buildingsFarWidth, buildingsFarY, 0), quaternion.identity);
         buildingsFarList.Add(groundTransform);
     }
-    
+
     private void SpawnInitialBuildingsFront()
     {
         buildingsFrontList = new List<Transform>();
-        
+
         const float buildingsFrontY = -15f;
 
-        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFrontBackground, new Vector3(0, buildingsFrontY, 0), quaternion.identity);
+        Transform groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFrontBackground,
+            new Vector3(0, buildingsFrontY, 0), quaternion.identity);
         buildingsFrontList.Add(groundTransform);
-        groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFrontBackground, new Vector3(buildingsFrontWidth, buildingsFrontY, 0), quaternion.identity);
+        groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFrontBackground,
+            new Vector3(buildingsFrontWidth, buildingsFrontY, 0), quaternion.identity);
         buildingsFrontList.Add(groundTransform);
-    }
-
-    private void Start()
-    {
-        Bird.GetInstance().OnDied += Bird_OnDied;
-        Bird.GetInstance().OnStartPlaying += Bird_OnStartPlaying;
     }
 
     private void Bird_OnDied(object sender, EventArgs e)
@@ -64,16 +78,6 @@ public class Background : MonoBehaviour
     private void Bird_OnStartPlaying(object sender, EventArgs e)
     {
         state = State.Playing;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (state == State.Playing)
-        {
-            HandleBuildingsFarMovement();
-            HandleBuildingsFrontMovement();
-        }
     }
 
     private void HandleBuildingsFrontMovement()
@@ -91,12 +95,8 @@ public class Background : MonoBehaviour
             // Find the right most x position
             var rightMostXPosition = -100f;
             foreach (Transform t in buildingsFrontList)
-            {
                 if (t.position.x > rightMostXPosition)
-                {
                     rightMostXPosition = t.position.x;
-                }
-            }
 
             // Place ground on the right most position
             Vector3 position = buildingsFarGroup.position;
@@ -121,12 +121,8 @@ public class Background : MonoBehaviour
             // Find the right most x position
             var rightMostXPosition = -100f;
             foreach (Transform t in buildingsFarList)
-            {
                 if (t.position.x > rightMostXPosition)
-                {
                     rightMostXPosition = t.position.x;
-                }
-            }
 
             // Place ground on the right most position
             Vector3 position = buildingsFarGroup.position;
