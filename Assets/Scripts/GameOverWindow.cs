@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using CodeMonkey.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,9 @@ public class GameOverWindow : MonoBehaviour
 {
     private Text _highScoreText;
     private Text _scoreText;
+    
+    [DllImport("__Internal")]
+    private static extern void GameOver (int score);
 
     private void Awake()
     {
@@ -52,11 +56,15 @@ public class GameOverWindow : MonoBehaviour
 
     private void GameWindow_OnDied(object sender, EventArgs e)
     {
-        _scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
+        var score = Level.GetInstance().GetPipesPassedCount();
+        
+        _scoreText.text = $"SCORE: {score.ToString()}";
 
-        _highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()
+        _highScoreText.text = score >= Score.GetHighScore()
             ? "NEW HIGH SCORE!"
             : $"HIGH SCORE: {Score.GetHighScore()}";
+        
+        GameOver (score);
 
         Show();
     }
