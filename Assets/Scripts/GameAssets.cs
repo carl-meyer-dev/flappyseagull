@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameAssets : MonoBehaviour
 {
@@ -7,16 +8,16 @@ public class GameAssets : MonoBehaviour
 
     public Sprite pipeHeadSprite;
     public Transform pfPipeBody;
-    public Transform pfPipeHead_1;
-    public Transform pfPipeHead_2;
+    [FormerlySerializedAs("pfPipeHead_1")] public Transform pfPipeHead1;
+    [FormerlySerializedAs("pfPipeHead_2")] public Transform pfPipeHead2;
     public Transform pfGround;
-    public Transform pfCloud_1;
-    public Transform pfCloud_2;
-    public Transform pfCloud_3;
+    [FormerlySerializedAs("pfCloud_1")] public Transform pfCloud1;
+    [FormerlySerializedAs("pfCloud_2")] public Transform pfCloud2;
+    [FormerlySerializedAs("pfCloud_3")] public Transform pfCloud3;
     public Transform pfBuildingsFarBackground;
     public Transform pfBuildingsFrontBackground;
 
-    public SoundAudioClip[] SoundAudioClips;
+    [FormerlySerializedAs("SoundAudioClips")] public SoundAudioClip[] soundAudioClips;
 
     private void Awake()
     {

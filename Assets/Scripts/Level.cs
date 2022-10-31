@@ -21,27 +21,27 @@ public class Level : MonoBehaviour
     private const float CloudWidth = 60f;
 
     private static Level _instance;
-    private List<Transform> cloudList;
-    private float cloudSpawnTimer;
-    private float gapSize;
+    private List<Transform> _cloudList;
+    private float _cloudSpawnTimer;
+    private float _gapSize;
 
-    private List<Transform> groundList;
-    private List<Pipe> pipesList;
-    private int pipesPassedCount;
-    private float pipeSpawnTimer;
-    private float pipeSpawnTimerMax;
-    private int pipesSpawned;
-    private State state;
+    private List<Transform> _groundList;
+    private List<Pipe> _pipesList;
+    private int _pipesPassedCount;
+    private float _pipeSpawnTimer;
+    private float _pipeSpawnTimerMax;
+    private int _pipesSpawned;
+    private State _state;
 
     private void Awake()
     {
         _instance = this;
-        pipesList = new List<Pipe>();
+        _pipesList = new List<Pipe>();
         // SpawnInitialClouds();
         SpawnInitialGround();
-        pipeSpawnTimerMax = 1f;
+        _pipeSpawnTimerMax = 1f;
         SetDifficulty(Difficulty.Easy);
-        state = State.WaitingToStart;
+        _state = State.WaitingToStart;
     }
 
     private void Start()
@@ -52,7 +52,7 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (state == State.Playing)
+        if (_state == State.Playing)
         {
             HandlePipeMovement();
             HandlePipeSpawning();
@@ -68,12 +68,12 @@ public class Level : MonoBehaviour
 
     private void Bird_OnStartPlaying(object sender, EventArgs e)
     {
-        state = State.Playing;
+        _state = State.Playing;
     }
 
     private void Bird_OnDied(object sender, EventArgs e)
     {
-        state = State.BirdDead;
+        _state = State.BirdDead;
     }
 
     private enum Difficulty
@@ -92,15 +92,15 @@ public class Level : MonoBehaviour
     } // ReSharper disable Unity.PerformanceAnalysis
     private void HandlePipeSpawning()
     {
-        pipeSpawnTimer -= Time.deltaTime;
-        if (pipeSpawnTimer < 0)
+        _pipeSpawnTimer -= Time.deltaTime;
+        if (_pipeSpawnTimer < 0)
         {
             // Time to spawn another pipe
-            pipeSpawnTimer += pipeSpawnTimerMax;
+            _pipeSpawnTimer += _pipeSpawnTimerMax;
 
             var height = CalcRandomHeight();
-            CreateGapPipes(height, gapSize, PipeSpawnXPosition);
-            pipesSpawned++;
+            CreateGapPipes(height, _gapSize, PipeSpawnXPosition);
+            _pipesSpawned++;
             SetDifficulty(GetDifficulty());
         }
     }
@@ -108,31 +108,31 @@ public class Level : MonoBehaviour
     private float CalcRandomHeight()
     {
         const float heightEdgeLimit = 10f;
-        var minHeight = gapSize * 0.5f + heightEdgeLimit;
+        var minHeight = _gapSize * 0.5f + heightEdgeLimit;
         const float totalHeight = CameraOrthoSize * 2f;
-        var maxHeight = totalHeight - gapSize * 0.5f - heightEdgeLimit;
+        var maxHeight = totalHeight - _gapSize * 0.5f - heightEdgeLimit;
 
         return Random.Range(minHeight, maxHeight);
     }
 
     private void HandlePipeMovement()
     {
-        for (var index = 0; index < pipesList.Count; index++)
+        for (var index = 0; index < _pipesList.Count; index++)
         {
-            Pipe pipe = pipesList[index];
+            Pipe pipe = _pipesList[index];
             var isToTheRightOfBird = pipe.GetXPosition() > BirdXPosition;
             pipe.Move();
             if (isToTheRightOfBird && pipe.GetXPosition() <= BirdXPosition)
                 // Pipe passed bird
                 if (pipe.IsBottom())
                 {
-                    pipesPassedCount++;
+                    _pipesPassedCount++;
                     SoundManager.PlaySound(SoundManager.Sound.Score);
                 }
 
             if (pipe.GetXPosition() < PipeDestroyXPosition)
             {
-                pipesList.Remove(pipe);
+                _pipesList.Remove(pipe);
                 pipe.DestroySelf();
                 index--;
             }
@@ -141,35 +141,35 @@ public class Level : MonoBehaviour
 
     private void SpawnInitialClouds()
     {
-        cloudList = new List<Transform>();
+        _cloudList = new List<Transform>();
 
         const float cloudStartY = -70f;
 
         Transform cloudTransform = Instantiate(GetCloudPrefabTransform(),
             new Vector3(cloudStartY, CloudSpawnYPosition, 0), quaternion.identity);
-        cloudList.Add(cloudTransform);
+        _cloudList.Add(cloudTransform);
         cloudTransform = Instantiate(GetCloudPrefabTransform(),
             new Vector3(cloudStartY + CloudWidth, CloudSpawnYPosition, 0), quaternion.identity);
-        cloudList.Add(cloudTransform);
+        _cloudList.Add(cloudTransform);
         cloudTransform = Instantiate(GetCloudPrefabTransform(),
             new Vector3(cloudStartY + CloudWidth * 2f, CloudSpawnYPosition, 0), quaternion.identity);
-        cloudList.Add(cloudTransform);
+        _cloudList.Add(cloudTransform);
     }
 
     private void SpawnInitialGround()
     {
-        groundList = new List<Transform>();
+        _groundList = new List<Transform>();
 
         const float groundY = -50f;
         Transform groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(0, groundY, 0),
             quaternion.identity);
-        groundList.Add(groundTransform);
+        _groundList.Add(groundTransform);
         groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth, groundY, 0),
             quaternion.identity);
-        groundList.Add(groundTransform);
+        _groundList.Add(groundTransform);
         groundTransform = Instantiate(GameAssets.GetInstance().pfGround, new Vector3(GroundWidth * 2f, groundY, 0),
             quaternion.identity);
-        groundList.Add(groundTransform);
+        _groundList.Add(groundTransform);
     }
 
     private Transform GetCloudPrefabTransform()
@@ -177,9 +177,9 @@ public class Level : MonoBehaviour
         var random = Random.Range(0, 3);
         return random switch
         {
-            1 => GameAssets.GetInstance().pfCloud_1,
-            2 => GameAssets.GetInstance().pfCloud_2,
-            _ => GameAssets.GetInstance().pfCloud_3
+            1 => GameAssets.GetInstance().pfCloud1,
+            2 => GameAssets.GetInstance().pfCloud2,
+            _ => GameAssets.GetInstance().pfCloud3
         };
     }
 
@@ -188,36 +188,36 @@ public class Level : MonoBehaviour
         var random = Random.Range(0, 2);
         return random switch
         {
-            1 => GameAssets.GetInstance().pfPipeHead_1,
-            _ => GameAssets.GetInstance().pfPipeHead_2
+            1 => GameAssets.GetInstance().pfPipeHead1,
+            _ => GameAssets.GetInstance().pfPipeHead2
         };
     }
 
     private void HandleClouds()
     {
         // Handle Cloud Spawning
-        cloudSpawnTimer -= Time.deltaTime;
-        if (cloudSpawnTimer < 0)
+        _cloudSpawnTimer -= Time.deltaTime;
+        if (_cloudSpawnTimer < 0)
         {
             // Time to spawn another cloud
             const float cloudSpawnTimerMax = 3f;
-            cloudSpawnTimer = cloudSpawnTimerMax;
-            Transform groundTransform = Instantiate(GameAssets.GetInstance().pfCloud_1,
+            _cloudSpawnTimer = cloudSpawnTimerMax;
+            Transform groundTransform = Instantiate(GameAssets.GetInstance().pfCloud1,
                 new Vector3(CloudSpawnXPosition, CloudSpawnYPosition, 0), quaternion.identity);
-            cloudList.Add(groundTransform);
+            _cloudList.Add(groundTransform);
         }
 
         // Handle Cloud Moving
-        for (var i = 0; i < cloudList.Count; i++)
+        for (var i = 0; i < _cloudList.Count; i++)
         {
-            Transform cloudTransform = cloudList[i];
+            Transform cloudTransform = _cloudList[i];
             // move clouds with less speed for parralax effect
             cloudTransform.position += new Vector3(-1, 0, 0) * (PipeMoveSpeed * Time.deltaTime * 0.7f);
 
             if (!(cloudTransform.position.x < CloudDestroyXPosition)) continue;
             // Cloud past destroy point, destroy self
             Destroy(cloudTransform.gameObject);
-            cloudList.RemoveAt(i);
+            _cloudList.RemoveAt(i);
             i--;
         }
     }
@@ -225,7 +225,7 @@ public class Level : MonoBehaviour
 
     private void HandleGround()
     {
-        foreach (Transform groundTransform in groundList)
+        foreach (Transform groundTransform in _groundList)
         {
             groundTransform.position += new Vector3(-1, 0, 0) * (PipeMoveSpeed * Time.deltaTime);
 
@@ -234,7 +234,7 @@ public class Level : MonoBehaviour
 
             // Find the right most x position
             var rightMostXPosition = -100f;
-            foreach (Transform t in groundList)
+            foreach (Transform t in _groundList)
                 if (t.position.x > rightMostXPosition)
                     rightMostXPosition = t.position.x;
 
@@ -252,27 +252,27 @@ public class Level : MonoBehaviour
         switch (difficulty)
         {
             case Difficulty.Easy:
-                gapSize = 40f;
-                pipeSpawnTimerMax = 1.4f;
+                _gapSize = 40f;
+                _pipeSpawnTimerMax = 1.4f;
                 break;
             case Difficulty.Medium:
-                gapSize = 40f;
-                pipeSpawnTimerMax = 1.3f;
+                _gapSize = 40f;
+                _pipeSpawnTimerMax = 1.3f;
                 break;
             case Difficulty.Hard:
-                gapSize = 35f;
-                pipeSpawnTimerMax = 1.1f;
+                _gapSize = 35f;
+                _pipeSpawnTimerMax = 1.1f;
                 break;
             case Difficulty.Impossible:
-                gapSize = 25f;
-                pipeSpawnTimerMax = 1f;
+                _gapSize = 25f;
+                _pipeSpawnTimerMax = 1f;
                 break;
         }
     }
 
     private Difficulty GetDifficulty()
     {
-        switch (pipesSpawned)
+        switch (_pipesSpawned)
         {
             case >= 30:
                 return Difficulty.Impossible;
@@ -299,7 +299,7 @@ public class Level : MonoBehaviour
 
         var pipe = new Pipe(pipeHead, pipeBody, createBottom);
 
-        pipesList.Add(pipe);
+        _pipesList.Add(pipe);
     }
 
     private Transform CreatePipeHead(float height, float xPosition, bool createBottom)
@@ -354,12 +354,12 @@ public class Level : MonoBehaviour
 
     public int GetPipeSpawn()
     {
-        return pipesSpawned;
+        return _pipesSpawned;
     }
 
     public int GetPipesPassedCount()
     {
-        return pipesPassedCount;
+        return _pipesPassedCount;
     }
 
     /**
@@ -367,37 +367,37 @@ public class Level : MonoBehaviour
      */
     private class Pipe
     {
-        private readonly bool isBottom;
-        private readonly Transform pipeBodyTransform;
-        private readonly Transform pipeHeadTransform;
+        private readonly bool _isBottom;
+        private readonly Transform _pipeBodyTransform;
+        private readonly Transform _pipeHeadTransform;
 
         public Pipe(Transform pipeHeadTransform, Transform pipeBodyTransform, bool isBottom)
         {
-            this.pipeHeadTransform = pipeHeadTransform;
-            this.pipeBodyTransform = pipeBodyTransform;
-            this.isBottom = isBottom;
+            this._pipeHeadTransform = pipeHeadTransform;
+            this._pipeBodyTransform = pipeBodyTransform;
+            this._isBottom = isBottom;
         }
 
         public void Move()
         {
-            pipeHeadTransform.position += Vector3.left * (PipeMoveSpeed * Time.deltaTime);
-            pipeBodyTransform.position += Vector3.left * (PipeMoveSpeed * Time.deltaTime);
+            _pipeHeadTransform.position += Vector3.left * (PipeMoveSpeed * Time.deltaTime);
+            _pipeBodyTransform.position += Vector3.left * (PipeMoveSpeed * Time.deltaTime);
         }
 
         public float GetXPosition()
         {
-            return pipeHeadTransform.position.x;
+            return _pipeHeadTransform.position.x;
         }
 
         public bool IsBottom()
         {
-            return isBottom;
+            return _isBottom;
         }
 
         public void DestroySelf()
         {
-            Destroy(pipeHeadTransform.gameObject);
-            Destroy(pipeBodyTransform.gameObject);
+            Destroy(_pipeHeadTransform.gameObject);
+            Destroy(_pipeBodyTransform.gameObject);
         }
     }
 }

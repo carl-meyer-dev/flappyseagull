@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class GameOverWindow : MonoBehaviour
 {
-    private Text highScoreText;
-    private Text scoreText;
+    private Text _highScoreText;
+    private Text _scoreText;
 
     private void Awake()
     {
-        scoreText = transform.Find("scoreText").GetComponent<Text>();
-        highScoreText = transform.Find("highScoreText").GetComponent<Text>();
+        _scoreText = transform.Find("scoreText").GetComponent<Text>();
+        _highScoreText = transform.Find("highScoreText").GetComponent<Text>();
 
         SetupUI();
     }
@@ -52,9 +52,9 @@ public class GameOverWindow : MonoBehaviour
 
     private void GameWindow_OnDied(object sender, EventArgs e)
     {
-        scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
+        _scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
 
-        highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()
+        _highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()
             ? "NEW HIGH SCORE!"
             : $"HIGH SCORE: {Score.GetHighScore()}";
 
