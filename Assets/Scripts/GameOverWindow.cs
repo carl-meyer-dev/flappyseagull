@@ -11,6 +11,9 @@ public class GameOverWindow : MonoBehaviour
     
     [DllImport("__Internal")]
     private static extern void GameOver (int score);
+    
+    [DllImport("__Internal")]
+    private static extern void PlayAgain ();
 
     private void Awake()
     {
@@ -47,6 +50,8 @@ public class GameOverWindow : MonoBehaviour
     public void OnPlayAgain()
     {
         Loader.Load(Loader.Scene.Game);
+
+        PlayAgain();
     }
 
     public void OnReturnToMainMenu()

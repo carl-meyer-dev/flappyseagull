@@ -2,4 +2,7 @@
   GameOver: function (score) {
     window.dispatchReactUnityEvent("GameOver", score);
   },
+  PlayAgain: function () {
+      window.dispatchReactUnityEvent("PlayAgain");
+    },
 });
