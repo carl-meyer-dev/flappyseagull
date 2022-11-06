@@ -3,6 +3,9 @@
     window.dispatchReactUnityEvent("GameOver", score);
   },
   PlayAgain: function () {
-      window.dispatchReactUnityEvent("PlayAgain");
-    },
+    window.dispatchReactUnityEvent("PlayAgain");
+  },
+  Quit: function () {
+    window.dispatchReactUnityEvent("Quit");
+  },
 });

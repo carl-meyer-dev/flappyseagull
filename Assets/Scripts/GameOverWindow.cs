@@ -51,7 +51,7 @@ public class GameOverWindow : MonoBehaviour
     {
         Loader.Load(Loader.Scene.Game);
 
-        PlayAgain();
+        InvokePlayAgainWebglEvent();
     }
 
     public void OnReturnToMainMenu()
@@ -68,10 +68,37 @@ public class GameOverWindow : MonoBehaviour
         _highScoreText.text = score >= Score.GetHighScore()
             ? "NEW HIGH SCORE!"
             : $"HIGH SCORE: {Score.GetHighScore()}";
-        
-        GameOver (score);
+
+        InvokeGameOverWebglEvent(score);
 
         Show();
+    }
+    
+
+    private void InvokeGameOverWebglEvent(int score)
+    {
+        try
+        {
+            GameOver (score);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Probably debugging in Unity Player.");
+            Console.WriteLine(e);
+        }
+    }
+
+    private void InvokePlayAgainWebglEvent()
+    {
+        try
+        {
+            GameOverWindow.PlayAgain();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Probably debugging in Unity Player.");
+            Console.WriteLine(e);
+        }
     }
 
     private void Hide()
