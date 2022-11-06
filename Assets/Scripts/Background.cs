@@ -6,18 +6,18 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     private const float BackgroundSpeed = 10f;
-    private const float buildingsFarDestroyXPosition = -270f;
-    private const float buildingsFarWidth = 400f;
-    private const float buildingsFrontDestroyXPosition = -300f;
-    private const float buildingsFrontWidth = 400f;
+    private const float BuildingsFarDestroyXPosition = -270f;
+    private const float BuildingsFarWidth = 400f;
+    private const float BuildingsFrontDestroyXPosition = -300f;
+    private const float BuildingsFrontWidth = 400f;
 
-    private List<Transform> buildingsFarList;
+    private List<Transform> _buildingsFarList;
 
-    private List<Transform> buildingsFrontList;
+    private List<Transform> _buildingsFrontList;
 
-    private List<Transform> layer2Buildings;
+    private List<Transform> _layer2Buildings;
 
-    private State state;
+    private State _state;
 
 
     private void Awake()
@@ -35,7 +35,7 @@ public class Background : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (state == State.Playing)
+        if (_state == State.Playing)
         {
             HandleBuildingsFarMovement();
             HandleBuildingsFrontMovement();
@@ -44,63 +44,63 @@ public class Background : MonoBehaviour
 
     private void SpawnInitialBuildingsFar()
     {
-        buildingsFarList = new List<Transform>();
+        _buildingsFarList = new List<Transform>();
 
         const float buildingsFarY = -14f;
 
         Transform groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFarBackground,
             new Vector3(0, buildingsFarY, 0), quaternion.identity);
-        buildingsFarList.Add(groundTransform);
+        _buildingsFarList.Add(groundTransform);
         groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFarBackground,
-            new Vector3(buildingsFarWidth, buildingsFarY, 0), quaternion.identity);
-        buildingsFarList.Add(groundTransform);
+            new Vector3(BuildingsFarWidth, buildingsFarY, 0), quaternion.identity);
+        _buildingsFarList.Add(groundTransform);
     }
 
     private void SpawnInitialBuildingsFront()
     {
-        buildingsFrontList = new List<Transform>();
+        _buildingsFrontList = new List<Transform>();
 
         const float buildingsFrontY = -15f;
 
         Transform groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFrontBackground,
             new Vector3(0, buildingsFrontY, 0), quaternion.identity);
-        buildingsFrontList.Add(groundTransform);
+        _buildingsFrontList.Add(groundTransform);
         groundTransform = Instantiate(GameAssets.GetInstance().pfBuildingsFrontBackground,
-            new Vector3(buildingsFrontWidth, buildingsFrontY, 0), quaternion.identity);
-        buildingsFrontList.Add(groundTransform);
+            new Vector3(BuildingsFrontWidth, buildingsFrontY, 0), quaternion.identity);
+        _buildingsFrontList.Add(groundTransform);
     }
 
     private void Bird_OnDied(object sender, EventArgs e)
     {
-        state = State.BirdDead;
+        _state = State.BirdDead;
     }
 
     private void Bird_OnStartPlaying(object sender, EventArgs e)
     {
-        state = State.Playing;
+        _state = State.Playing;
     }
 
     private void HandleBuildingsFrontMovement()
     {
         const float parallaxEffectMultiplayer = .75f;
 
-        foreach (Transform buildingsFarGroup in buildingsFrontList)
+        foreach (Transform buildingsFarGroup in _buildingsFrontList)
         {
             buildingsFarGroup.position +=
                 new Vector3(-1, 0, 0) * (BackgroundSpeed * Time.deltaTime * parallaxEffectMultiplayer);
 
-            if (!(buildingsFarGroup.position.x < buildingsFrontDestroyXPosition)) continue;
+            if (!(buildingsFarGroup.position.x < BuildingsFrontDestroyXPosition)) continue;
             // Buildings Group passed the left side go relocate on the right side
 
             // Find the right most x position
             var rightMostXPosition = -100f;
-            foreach (Transform t in buildingsFrontList)
+            foreach (Transform t in _buildingsFrontList)
                 if (t.position.x > rightMostXPosition)
                     rightMostXPosition = t.position.x;
 
             // Place ground on the right most position
             Vector3 position = buildingsFarGroup.position;
-            position = new Vector3(rightMostXPosition + buildingsFrontWidth, position.y,
+            position = new Vector3(rightMostXPosition + BuildingsFrontWidth, position.y,
                 position.z);
             buildingsFarGroup.position = position;
         }
@@ -110,23 +110,23 @@ public class Background : MonoBehaviour
     {
         const float parallaxEffectMultiplayer = .5f;
 
-        foreach (Transform buildingsFarGroup in buildingsFarList)
+        foreach (Transform buildingsFarGroup in _buildingsFarList)
         {
             buildingsFarGroup.position +=
                 new Vector3(-1, 0, 0) * (BackgroundSpeed * Time.deltaTime * parallaxEffectMultiplayer);
 
-            if (!(buildingsFarGroup.position.x < buildingsFarDestroyXPosition)) continue;
+            if (!(buildingsFarGroup.position.x < BuildingsFarDestroyXPosition)) continue;
             // Buildings Group passed the left side go relocate on the right side
 
             // Find the right most x position
             var rightMostXPosition = -100f;
-            foreach (Transform t in buildingsFarList)
+            foreach (Transform t in _buildingsFarList)
                 if (t.position.x > rightMostXPosition)
                     rightMostXPosition = t.position.x;
 
             // Place ground on the right most position
             Vector3 position = buildingsFarGroup.position;
-            position = new Vector3(rightMostXPosition + buildingsFarWidth, position.y,
+            position = new Vector3(rightMostXPosition + BuildingsFarWidth, position.y,
                 position.z);
             buildingsFarGroup.position = position;
         }

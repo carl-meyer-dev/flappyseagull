@@ -1,17 +1,24 @@
 using System;
+using System.Runtime.InteropServices;
 using CodeMonkey.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameOverWindow : MonoBehaviour
 {
-    private Text highScoreText;
-    private Text scoreText;
+    private Text _highScoreText;
+    private Text _scoreText;
+    
+    [DllImport("__Internal")]
+    private static extern void GameOver (int score);
+    
+    [DllImport("__Internal")]
+    private static extern void PlayAgain ();
 
     private void Awake()
     {
-        scoreText = transform.Find("scoreText").GetComponent<Text>();
-        highScoreText = transform.Find("highScoreText").GetComponent<Text>();
+        _scoreText = transform.Find("scoreText").GetComponent<Text>();
+        _highScoreText = transform.Find("highScoreText").GetComponent<Text>();
 
         SetupUI();
     }
@@ -43,6 +50,8 @@ public class GameOverWindow : MonoBehaviour
     public void OnPlayAgain()
     {
         Loader.Load(Loader.Scene.Game);
+
+        InvokePlayAgainWebglEvent();
     }
 
     public void OnReturnToMainMenu()
@@ -52,13 +61,44 @@ public class GameOverWindow : MonoBehaviour
 
     private void GameWindow_OnDied(object sender, EventArgs e)
     {
-        scoreText.text = $"SCORE: {Level.GetInstance().GetPipesPassedCount().ToString()}";
+        var score = Level.GetInstance().GetPipesPassedCount();
+        
+        _scoreText.text = $"SCORE: {score.ToString()}";
 
-        highScoreText.text = Level.GetInstance().GetPipesPassedCount() >= Score.GetHighScore()
+        _highScoreText.text = score >= Score.GetHighScore()
             ? "NEW HIGH SCORE!"
             : $"HIGH SCORE: {Score.GetHighScore()}";
 
+        InvokeGameOverWebglEvent(score);
+
         Show();
+    }
+    
+
+    private void InvokeGameOverWebglEvent(int score)
+    {
+        try
+        {
+            GameOver (score);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Probably debugging in Unity Player.");
+            Console.WriteLine(e);
+        }
+    }
+
+    private void InvokePlayAgainWebglEvent()
+    {
+        try
+        {
+            GameOverWindow.PlayAgain();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Probably debugging in Unity Player.");
+            Console.WriteLine(e);
+        }
     }
 
     private void Hide()

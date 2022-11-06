@@ -4,42 +4,42 @@ public class SeagullMenuMovement : MonoBehaviour
 {
     private const float WalkSpeed = 10f;
     private static readonly int AnimatorState = Animator.StringToHash("State");
-    private Animator animator;
-    private Vector3 direction = Vector3.right;
-    private bool hasPecked;
-    private float idleAnimationTimer;
-    private float idleAnimationTimerMax;
-    private float peckingAnimationTimer;
-    private float peckingAnimationTimerMax;
-    private SpriteRenderer sprite;
-    private State state;
-    private float walkingAnimationTimer;
-    private float walkingAnimationTimerMax;
+    private Animator _animator;
+    private Vector3 _direction = Vector3.right;
+    private bool _hasPecked;
+    private float _idleAnimationTimer;
+    private float _idleAnimationTimerMax;
+    private float _peckingAnimationTimer;
+    private float _peckingAnimationTimerMax;
+    private SpriteRenderer _sprite;
+    private State _state;
+    private float _walkingAnimationTimer;
+    private float _walkingAnimationTimerMax;
 
     private void Awake()
     {
-        walkingAnimationTimerMax = 5f;
-        idleAnimationTimerMax = 1f;
-        peckingAnimationTimerMax = 0.45f;
+        _walkingAnimationTimerMax = 5f;
+        _idleAnimationTimerMax = 1f;
+        _peckingAnimationTimerMax = 0.45f;
 
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
     private void Start()
     {
-        sprite = GetComponent<SpriteRenderer>();
-        state = State.Walking;
+        _sprite = GetComponent<SpriteRenderer>();
+        _state = State.Walking;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (state == State.Walking) HandleMovement();
+        if (_state == State.Walking) HandleMovement();
 
-        if (state == State.Idle) HandleIdle();
+        if (_state == State.Idle) HandleIdle();
 
-        if (state == State.Pecking) HandlePecking();
+        if (_state == State.Pecking) HandlePecking();
 
         UpdateAnimationState();
     }
@@ -48,61 +48,61 @@ public class SeagullMenuMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         Debug.Log("On Trigger Enter!");
-        direction = direction == Vector3.right ? Vector3.left : Vector3.right;
-        sprite.flipX = !sprite.flipX;
+        _direction = _direction == Vector3.right ? Vector3.left : Vector3.right;
+        _sprite.flipX = !_sprite.flipX;
     }
 
     private void HandlePecking()
     {
-        peckingAnimationTimer += Time.deltaTime;
-        if (peckingAnimationTimer > peckingAnimationTimerMax)
+        _peckingAnimationTimer += Time.deltaTime;
+        if (_peckingAnimationTimer > _peckingAnimationTimerMax)
         {
-            state = State.Idle;
-            peckingAnimationTimer = 0f;
-            hasPecked = true;
+            _state = State.Idle;
+            _peckingAnimationTimer = 0f;
+            _hasPecked = true;
             Debug.Log("Done Pecking, Change State to Idle");
         }
     }
 
     private void HandleIdle()
     {
-        idleAnimationTimer += Time.deltaTime;
-        if (idleAnimationTimer > idleAnimationTimerMax)
+        _idleAnimationTimer += Time.deltaTime;
+        if (_idleAnimationTimer > _idleAnimationTimerMax)
         {
-            if (hasPecked)
+            if (_hasPecked)
             {
                 Debug.Log("Change State to Walking");
-                state = State.Walking;
-                idleAnimationTimer = 0f;
-                hasPecked = false;
+                _state = State.Walking;
+                _idleAnimationTimer = 0f;
+                _hasPecked = false;
             }
             else
             {
                 Debug.Log("Change State to Pecking");
-                state = State.Pecking;
-                idleAnimationTimer = 0f;
+                _state = State.Pecking;
+                _idleAnimationTimer = 0f;
             }
         }
     }
 
     private void UpdateAnimationState()
     {
-        animator.SetInteger(AnimatorState, state.GetHashCode());
+        _animator.SetInteger(AnimatorState, _state.GetHashCode());
     }
 
     private void HandleMovement()
     {
-        walkingAnimationTimer += Time.deltaTime;
+        _walkingAnimationTimer += Time.deltaTime;
 
-        if (walkingAnimationTimer > walkingAnimationTimerMax)
+        if (_walkingAnimationTimer > _walkingAnimationTimerMax)
         {
             Debug.Log("Change State to Idle");
-            state = State.Idle;
-            walkingAnimationTimer = 0f;
+            _state = State.Idle;
+            _walkingAnimationTimer = 0f;
         }
         else
         {
-            transform.position += direction * (WalkSpeed * Time.deltaTime);
+            transform.position += _direction * (WalkSpeed * Time.deltaTime);
         }
     }
 

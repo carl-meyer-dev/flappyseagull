@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class ScoreWindow : MonoBehaviour
 {
-    private Text scoreText;
+    private Text _scoreText;
 
     private void Awake()
     {
-        scoreText = transform.Find("scoreText").GetComponent<Text>();
+        _scoreText = transform.Find("scoreText").GetComponent<Text>();
     }
 
     private void Start()
@@ -21,7 +21,7 @@ public class ScoreWindow : MonoBehaviour
 
     private void Update()
     {
-        scoreText.text = Level.GetInstance().GetPipesPassedCount().ToString();
+        _scoreText.text = Level.GetInstance().GetPipesPassedCount().ToString();
     }
 
     private void ScoreWindow_OnBirdDied(object sender, EventArgs e)
